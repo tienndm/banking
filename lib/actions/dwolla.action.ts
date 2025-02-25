@@ -27,10 +27,12 @@ export const createFundingSource = async (
   options: CreateFundingSourceOptions
 ) => {
   try {
+    const url = `customers/${options.customerId}/funding-sources`;
     return await dwollaClient
-      .post(`customers/${options.customerId}/funding-sources`, {
+      .post(url, {
         name: options.fundingSourceName,
         plaidToken: options.plaidToken,
+        ...(options._links && { _links: options._links }),
       })
       .then((res) => res.headers.get("location"));
   } catch (err) {
